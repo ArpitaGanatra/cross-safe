@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Inter } from "next/font/google";
-import { Button } from "@/components/button";
+import { Button } from "@chakra-ui/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,10 +18,10 @@ export default function Home() {
         </p>
 
         <div>
-          <Button className="text-black">Create Safe</Button>
-          <Button className="text-black">Accept Txn</Button>
+          <Button colorScheme="green">Create Safe</Button>
+          <Button colorScheme="green">Accept Txn</Button>
           OR
-          <Button className="text-black">Existing safe info</Button>
+          <Button colorScheme="green">Existing safe info</Button>
         </div>
       </div>
     </main>
