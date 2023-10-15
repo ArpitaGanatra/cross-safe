@@ -55,5 +55,10 @@ body {
   background-position: center;
 }
 
-.btn {
+.input_box {
+  background-color: #e2e8f0;
+
+  border-radius: 5px;
+  height: 1rem;
+  padding: 1rem;
 }
