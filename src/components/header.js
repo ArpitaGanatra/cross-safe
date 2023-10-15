@@ -20,10 +20,11 @@ const Header = () => {
                   "flex items-center justify-center rounded-full bg-white p-2"
                 }
               >
-                {/* <Logo className={"h-4 w-4"} /> */}
+                {/* <Logo className={"h-4 w-4"} /> */} safe-x
               </div>
             </Link>
           </div>
+
           <div className={"flex items-center justify-end"}>
             <ConnectButton />
           </div>
