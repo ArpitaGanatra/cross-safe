@@ -17,6 +17,7 @@
     "@rainbow-me/rainbowkit": "^1.1.1",
     "@web3modal/react": "^2.7.1",
     "dotenv-cli": "^7.3.0",
+    "ethers": "^5.7.2",
     "formik": "^2.4.5",
     "framer-motion": "^10.16.4",
     "next": "13.5.4",

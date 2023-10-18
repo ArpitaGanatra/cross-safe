@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import { Button } from "@chakra-ui/react";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +19,9 @@ export default function Home() {
         </p>
 
         <div>
-          <Button colorScheme="green">Create Safe</Button>
+          <Button colorScheme="green">
+            <Link href="/create-new">Create Safe</Link>
+          </Button>
           <Button colorScheme="green">Accept Txn</Button>
           OR
           <Button colorScheme="green">Existing safe info</Button>
