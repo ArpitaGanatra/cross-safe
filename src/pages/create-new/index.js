@@ -61,11 +61,8 @@ const CreateSafe = () => {
           <div className="flex-[0.33] bg-gradient-to-b from-[#3f013e] via-[#823782] to-[#3600b5]  rounded-xl px-9 py-6 flex flex-col justify-between">
             <div>
               <h2 className="text-white text-3xl font-semibold mb-4">
-                Start your crypto journey with us.
+                Start your treasury management journey with us.
               </h2>
-              <p className="text-gray-300 text-base">
-                sell your crypto assets and get paid in your local currency
-              </p>
             </div>
           </div>
           <div className="flex-[0.67] pr-10 py-4">
