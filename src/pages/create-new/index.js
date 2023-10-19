@@ -3,7 +3,7 @@ import { Formik, FieldArray, Field, Form, useFormik } from "formik";
 import * as yup from "yup";
 import CreateSafeForm from "@/components/createSafeForm";
 import { ethers } from "ethers";
-import { mumbaiABI } from "../abi/mumbaiABI";
+import { mumbaiABI } from "../../abi/mumbaiABI";
 import { useAccount } from "wagmi";
 
 const CreateSafe = () => {

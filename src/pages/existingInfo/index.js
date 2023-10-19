@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { mumbaiABI } from "../abi/mumbaiABI";
+import { mumbaiABI } from "../../abi/mumbaiABI";
 import { ethers } from "ethers";
 import { Box, Button } from "@chakra-ui/react";
 
