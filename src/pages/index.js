@@ -22,9 +22,13 @@ export default function Home() {
           <Button colorScheme="green">
             <Link href="/create-new">Create Safe</Link>
           </Button>
-          <Button colorScheme="green">Accept Txn</Button>
+          <Button colorScheme="green">
+            <Link href="/fundsTransfer">Add/withdraw funds</Link>
+          </Button>
           OR
-          <Button colorScheme="green">Existing safe info</Button>
+          <Button colorScheme="green">
+            <Link href="/existingInfo">Existing safe info</Link>
+          </Button>
         </div>
       </div>
     </main>

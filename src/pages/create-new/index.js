@@ -3,7 +3,7 @@ import { Formik, FieldArray, Field, Form, useFormik } from "formik";
 import * as yup from "yup";
 import CreateSafeForm from "@/components/createSafeForm";
 import { ethers } from "ethers";
-import mumbaiABI from "../abi/mumbaiABI";
+import { mumbaiABI } from "../abi/mumbaiABI";
 
 const CreateSafe = () => {
   const validationSchema = yup.object().shape({
@@ -20,8 +20,8 @@ const CreateSafe = () => {
     onSubmit: async (values) => {
       console.log(
         "VALUESS",
-        values,
-        new ethers.providers.Web3Provider(window.ethereum)
+        values.owners[0],
+        new ethers.providers.JsonRpcProvider(window.ethereum)
       );
       let provider = new ethers.providers.Web3Provider(window.ethereum);
       console.log(provider);
@@ -38,8 +38,10 @@ const CreateSafe = () => {
         signer
       );
       console.log("mumbaiContract", mumbaiContract);
+
       const res = await mumbaiContract.setSigner(values.owners[0]);
       console.log(res);
+      alert(await mumbaiContract.safeId());
     },
   });
   return (
