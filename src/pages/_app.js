@@ -2,7 +2,11 @@ import Header from "@/components/header";
 import { wagmiConfig } from "@/components/wagmi";
 import "@/styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
-import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import {
+  darkTheme,
+  getDefaultWallets,
+  RainbowKitProvider,
+} from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import {
   mainnet,
@@ -42,7 +46,13 @@ export default function App({ Component, pageProps }) {
     <>
       <ChakraProvider>
         <WagmiConfig config={wagmiConfig}>
-          <RainbowKitProvider chains={chains}>
+          <RainbowKitProvider
+            chains={chains}
+            theme={darkTheme({
+              accentColor: "#303134",
+              accentColorForeground: "white",
+            })}
+          >
             <Header />
             <Component {...pageProps} />
           </RainbowKitProvider>

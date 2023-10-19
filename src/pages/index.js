@@ -7,31 +7,6 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   return (
-    // <main
-    //   className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className} homeBG`}
-    // >
-    //   <div className="z-10 max-w-5xl ">
-    //     <h1 className="text-9xl font-bold mt-36">
-    //       Hassle free <span className="text-[#69f0ae]">multi-chain safe</span>
-    //     </h1>
-    //     <p className="text-2xl">
-    //       Fancy fact: Get the same address on all chains
-    //     </p>
-
-    //     <div>
-    //       <Button colorScheme="green">
-    //         <Link href="/create-new">Create Safe</Link>
-    //       </Button>
-    //       <Button colorScheme="green">
-    //         <Link href="/fundsTransfer">Add/withdraw funds</Link>
-    //       </Button>
-    //       OR
-    //       <Button colorScheme="green">
-    //         <Link href="/existingInfo">Existing safe info</Link>
-    //       </Button>
-    //     </div>
-    //   </div>
-    // </main>
     <header className="bg-[#1E1e1e] h-screen bg-[url('/new-bg.svg')] bg-center">
       <section className="w-[85%] mx-auto h-[95%] flex flex-col justify-between">
         <div className="w-[80%] mx-auto py-32 text-center mt-16">

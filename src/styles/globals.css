@@ -56,9 +56,10 @@ body {
 }
 
 .input_box {
-  background-color: #e2e8f0;
+  background-color: #303134;
 
   border-radius: 5px;
   height: 1rem;
   padding: 1rem;
+  width: 30rem;
 }

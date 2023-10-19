@@ -26,7 +26,7 @@ const Header = () => {
           </ul>
         </div>
         <div className={"flex items-center justify-end"}>
-          <ConnectButton className="bg-purple-50" />
+          <ConnectButton />
         </div>
       </div>
     </nav>
