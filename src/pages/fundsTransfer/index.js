@@ -15,7 +15,6 @@ import { useAccount } from "wagmi";
 import { goerliABI } from "@/abi/goerliABI";
 import { hyperlaneABI } from "@/abi/hyperlaneABI";
 import { avaxABI } from "@/abi/avaxABI";
-import { optimizedAppearDataAttribute } from "framer-motion";
 
 const index = () => {
   const { address } = useAccount();
