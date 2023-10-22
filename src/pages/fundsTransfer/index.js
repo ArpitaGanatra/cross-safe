@@ -99,16 +99,14 @@ const index = () => {
             avaxContractAddress,
             { value: goerliGasEstimation }
           );
+          const signRes = await goerliContract.withdraw(
+            values.safeId,
+            values.amount,
+            values.address,
+            values.chainId
+          );
           setLoadingTxn(false);
         }
-
-        const signRes = await goerliContract.withdraw(
-          values.safeId,
-          values.amount,
-          values.address,
-          values.chainId
-        );
-        setLoadingTxn(false);
       } else if (values.txnType === "signSts1") {
         setLoadingTxn(true);
 
