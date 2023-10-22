@@ -1,0 +1,32 @@
+Short description (280):
+Safe-x is a Cross Chain Multisig built using Hyperlane ,Push protocol's Showrunners framework powering Notifications and Circle's CCTP for Cross chain asset sharing.
+Desc : 
+-> Mostly everyone have used Safe's Multisig in Web3 but one issue with it is that it can only be deployed on Single chain.
+-> Let's say one user has funds on Optimism and one on Polygon so in this case they can't create a multisig in which widthrawl requires permission of both parties.
+-> Safe-X solves this issue using Hyperlane's Queries API.
+How it is made :
+->So firstly a user will create a safe with two signers,one himself(by default) and one from another chain(Avax,Mumbai,Sepolia).
+    A unique safe Id will be assigned to this safe . Eg(10).
+-> The second user can sign a transaction of Approval from his chain with the Safe Id provided and that approval will be recorded on the base contract using
+Hyperlane's Query Api.
+-> For widthrawl we are checking if both the owners of the safe have accepted transaction or not.
+-> The user can store USDCs in the contract and further for widthrawl it can provide the address,safeId and ChainId to which the USDCs needs to be
+transfered.
+-> Using Circle's CCTP we are burning USDC on base chain and minting USDC to the specified address and Chain .
+-> After the widthrawl we are resetting the signing status of the safe,for new widthrawl,both users needs to sign again .
+
+Hyperlane's Usecase :
+1> Fetch Owners of given SafeId on second Chain
+2> Get the Approval status of a transaction in Safe from Destination/Second chain like whether they have accepted/rejected a transaction.
+
+Push Notifications usecase :
+Using Showrunners framework for powering notifications in our Dapp.
+1>Send notification about a Widthrawl request to both the safe Owners ,like 5 USDC widthrawl request have been made in safe Id 1.
+2>Send notification when a Owner have Approved a transaction in a Safe,eg : Address1 have approved the transaction in Safe Id 1.
+3>Send Notification when USDC Funds have been added into the Safe,eg : 5 USDC have been added in Safe with ID 1.
+4>Send Notification about USDC widthrawl in Cross Chain and initiate the Cross Chain transfer using Event from the smart contract.
+5>Send Notification about Successful Money widthrawl on Same Chain as the base contract.
+
+Circle's CCTP Usecase:
+When "widthrawMoney" event will be fired from the Smart contact,we are catching it in the Push showrunners framework and initiating a Cross chain Transfer of the
+specified USDC amount.
