@@ -10,7 +10,6 @@ const index = () => {
 
   const showSafeInfo = async () => {
     let provider = new ethers.providers.Web3Provider(window.ethereum);
-    console.log(provider);
 
     const goerliContract = new ethers.Contract(
       goerliContractAddress,
@@ -19,7 +18,6 @@ const index = () => {
     );
 
     const res = await goerliContract.safeOwner(safeId);
-    console.log("res", res);
     setSafeInfo(res);
   };
   return (

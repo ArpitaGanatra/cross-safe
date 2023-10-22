@@ -22,16 +22,9 @@ const CreateSafe = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log(
-        "VALUESS",
-        values.owner2,
-        new ethers.providers.JsonRpcProvider(window.ethereum)
-      );
       let provider = new ethers.providers.Web3Provider(window.ethereum);
-      console.log(provider);
       await provider.send("eth_requestAccounts", [0]);
       let signer = provider.getSigner();
-      console.log(signer);
 
       const goerliContract = new ethers.Contract(
         goerliContractAddress,
@@ -43,7 +36,6 @@ const CreateSafe = () => {
         values.safeName,
         values.owner2
       );
-      console.log(res);
       formik.resetForm();
       alert(`Your safe id is: ${await goerliContract.safeId()}.`);
     },

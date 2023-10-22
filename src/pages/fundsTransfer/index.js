@@ -31,13 +31,6 @@ const index = () => {
     },
     // validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log(
-        "VALUESS",
-        values,
-        parseInt(
-          ethers.utils.parseUnits(values.amount.toString(), 6)
-        ).toString()
-      );
       setLoadingTxn(true);
       let provider = new ethers.providers.Web3Provider(window.ethereum);
       await provider.send("eth_requestAccounts", [0]);
@@ -107,7 +100,6 @@ const index = () => {
             avaxContractAddress,
             { value: goerliGasEstimation }
           );
-          console.log(statusChangeRes);
           setLoadingTxn(false);
         }
 
@@ -117,13 +109,11 @@ const index = () => {
           values.address,
           values.chainId
         );
-        console.log(signRes);
         setLoadingTxn(false);
       } else if (values.txnType === "signSts1") {
         setLoadingTxn(true);
 
         const signRes = await goerliContract.SetApproval(values.safeId);
-        console.log(signRes);
         setLoadingTxn(false);
       } else if (values.txnType === "signSts2") {
         setLoadingTxn(true);
@@ -131,8 +121,6 @@ const index = () => {
         hyperlaneContract
           .quoteGasPayment(5, 180000)
           .then(async (gasEstimationRes) => {
-            console.log("gasEstimationRes", parseInt(gasEstimationRes));
-            debugger;
             const avaxContract = new ethers.Contract(
               avaxContractAddress,
               avaxABI,
