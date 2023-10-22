@@ -1,10 +1,68 @@
-export const mumbaiABI = [
+export const goerliABI = [
   { inputs: [], stateMutability: "nonpayable", type: "constructor" },
   {
     anonymous: false,
     inputs: [
       { indexed: false, internalType: "address", name: "a1", type: "address" },
       { indexed: false, internalType: "address", name: "a2", type: "address" },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "_safeId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "_amt",
+        type: "uint256",
+      },
+    ],
+    name: "fundsAdded",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "balance",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "receiver",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "_safeId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "chainId",
+        type: "uint256",
+      },
+    ],
+    name: "moneyWidthrawn",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: false, internalType: "address", name: "a1", type: "address" },
+      { indexed: false, internalType: "address", name: "a2", type: "address" },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "_safeId",
+        type: "uint256",
+      },
       { indexed: false, internalType: "uint256", name: "amt", type: "uint256" },
     ],
     name: "sendNotification",
@@ -15,7 +73,43 @@ export const mumbaiABI = [
     inputs: [
       { indexed: false, internalType: "address", name: "a1", type: "address" },
       { indexed: false, internalType: "address", name: "a2", type: "address" },
-      { indexed: false, internalType: "uint256", name: "amt", type: "uint256" },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "_safeId",
+        type: "uint256",
+      },
+    ],
+    name: "signedTransaction",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "balance",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "receiver",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "_safeId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "chainId",
+        type: "uint256",
+      },
     ],
     name: "widthrawMoney",
     type: "event",
@@ -65,6 +159,7 @@ export const mumbaiABI = [
     inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     name: "safeOwner",
     outputs: [
+      { internalType: "string", name: "name", type: "string" },
       { internalType: "address", name: "a1", type: "address" },
       { internalType: "address", name: "a2", type: "address" },
       { internalType: "bool", name: "sts1", type: "bool" },
@@ -76,6 +171,7 @@ export const mumbaiABI = [
   },
   {
     inputs: [
+      { internalType: "string", name: "_name", type: "string" },
       { internalType: "address", name: "_crossChainAddress", type: "address" },
     ],
     name: "setSigner",
@@ -84,24 +180,51 @@ export const mumbaiABI = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "uint256", name: "_safeId", type: "uint256" }],
+    inputs: [
+      { internalType: "uint256", name: "_safeId", type: "uint256" },
+      { internalType: "uint256", name: "_amt", type: "uint256" },
+    ],
     name: "storeFunds",
     outputs: [],
-    stateMutability: "payable",
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
-    inputs: [{ internalType: "uint256", name: "_safeId", type: "uint256" }],
+    inputs: [],
+    name: "usdc",
+    outputs: [
+      { internalType: "contract IusdcToken", name: "", type: "address" },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "widthrawUsdc",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "uint256", name: "_safeId", type: "uint256" },
+      { internalType: "uint256", name: "_amt", type: "uint256" },
+    ],
     name: "widthrawrequest",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
   {
-    inputs: [{ internalType: "uint256", name: "_safeId", type: "uint256" }],
+    inputs: [
+      { internalType: "uint256", name: "_safeId", type: "uint256" },
+      { internalType: "uint256", name: "_amt", type: "uint256" },
+      { internalType: "address", name: "_addr", type: "address" },
+      { internalType: "uint256", name: "_chainId", type: "uint256" },
+    ],
     name: "withdraw",
     outputs: [],
-    stateMutability: "payable",
+    stateMutability: "nonpayable",
     type: "function",
   },
   {

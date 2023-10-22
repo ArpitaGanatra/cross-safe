@@ -3,8 +3,9 @@ import { Formik, FieldArray, Field, Form, useFormik } from "formik";
 import * as yup from "yup";
 import CreateSafeForm from "@/components/createSafeForm";
 import { ethers } from "ethers";
-import { mumbaiABI } from "../../abi/mumbaiABI";
+import { goerliABI } from "../../abi/goerliABI";
 import { useAccount } from "wagmi";
+import { goerliContractAddress } from "@/libs/constants";
 
 const CreateSafe = () => {
   const { address } = useAccount();
@@ -32,20 +33,19 @@ const CreateSafe = () => {
       let signer = provider.getSigner();
       console.log(signer);
 
-      const mumbaiContractAddress =
-        "0xBb429875392D9d2Ef21428426bB8F2288508c33e";
-
-      const mumbaiContract = new ethers.Contract(
-        mumbaiContractAddress,
-        mumbaiABI,
+      const goerliContract = new ethers.Contract(
+        goerliContractAddress,
+        goerliABI,
         signer
       );
-      console.log("mumbaiContract", mumbaiContract);
 
-      const res = await mumbaiContract.setSigner(values.owner2);
+      const res = await goerliContract.setSigner(
+        values.safeName,
+        values.owner2
+      );
       console.log(res);
       formik.resetForm();
-      alert(await mumbaiContract.safeId());
+      alert(`Your safe id is: ${(await goerliContract.safeId()) + 1}.`);
     },
   });
 

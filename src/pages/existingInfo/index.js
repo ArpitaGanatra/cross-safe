@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { mumbaiABI } from "../../abi/mumbaiABI";
+import { goerliABI } from "../../abi/goerliABI";
 import { ethers } from "ethers";
 import { Box, Button } from "@chakra-ui/react";
+import { goerliContractAddress } from "@/libs/constants";
 
 const index = () => {
   const [safeId, setSafeId] = useState("");
@@ -11,16 +12,13 @@ const index = () => {
     let provider = new ethers.providers.Web3Provider(window.ethereum);
     console.log(provider);
 
-    const mumbaiContractAddress = "0xBb429875392D9d2Ef21428426bB8F2288508c33e";
-
-    const mumbaiContract = new ethers.Contract(
-      mumbaiContractAddress,
-      mumbaiABI,
+    const goerliContract = new ethers.Contract(
+      goerliContractAddress,
+      goerliABI,
       provider
     );
-    console.log("mumbaiContract", mumbaiContract);
 
-    const res = await mumbaiContract.safeOwner(safeId);
+    const res = await goerliContract.safeOwner(safeId);
     console.log("res", res);
     setSafeInfo(res);
   };
@@ -34,12 +32,32 @@ const index = () => {
                 <h2 className="text-white text-3xl font-semibold mb-4">
                   Existing Safe Info
                 </h2>
+                <div>
+                  <p className="text-gray-300 text-base">Safe Name:</p>
+                  <p>{safeInfo.name}</p>
+                </div>
+                <div>
+                  <p className="text-gray-300 text-base">Safe Balance:</p>
+                  <p>{parseInt(safeInfo.balance)}</p>
+                </div>
                 <p className="text-gray-300 text-base">Owner1:</p>
                 <p>{safeInfo.a1}</p>
               </div>
               <div>
                 <p className="text-gray-300 text-base">Owner2:</p>
                 <p>{safeInfo.a2}</p>
+              </div>
+              <div>
+                <p className="text-gray-300 text-base">
+                  Signing status for Owner1:
+                </p>
+                <p>{String(safeInfo.sts1)}</p>
+              </div>
+              <div>
+                <p className="text-gray-300 text-base">
+                  Signing status for Owner2:
+                </p>
+                <p>{String(safeInfo.sts2)}</p>
               </div>
             </div>
           </div>

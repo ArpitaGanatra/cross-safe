@@ -16,6 +16,9 @@ import {
   base,
   zora,
   polygonMumbai,
+  goerli,
+  avalancheFuji,
+  scrollTestnet,
 } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
@@ -23,7 +26,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 
 export default function App({ Component, pageProps }) {
   const { chains, publicClient } = configureChains(
-    [mainnet, polygon, polygonMumbai, optimism, arbitrum, base, zora],
+    [goerli, avalancheFuji, scrollTestnet],
     [
       alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID }),
       publicProvider(),
