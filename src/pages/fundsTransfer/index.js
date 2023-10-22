@@ -94,18 +94,19 @@ const index = () => {
           180000
         );
         if (goerliGasEstimation) {
-          const statusChangeRes = await goerliContract.queryOwner(
-            values.safeId,
-            avaxContractAddress,
-            { value: goerliGasEstimation }
-          );
-          const signRes = await goerliContract.withdraw(
-            values.safeId,
-            values.amount,
-            values.address,
-            values.chainId
-          );
-          setLoadingTxn(false);
+          await goerliContract
+            .queryOwner(values.safeId, avaxContractAddress, {
+              value: goerliGasEstimation,
+            })
+            .then(async (value) => {
+              const signRes = await goerliContract.withdraw(
+                values.safeId,
+                values.amount,
+                values.address,
+                values.chainId
+              );
+              setLoadingTxn(false);
+            });
         }
       } else if (values.txnType === "signSts1") {
         setLoadingTxn(true);
