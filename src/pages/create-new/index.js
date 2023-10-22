@@ -39,7 +39,7 @@ const CreateSafe = () => {
       formik.resetForm();
       async function getSafeId() {
         const id = await goerliContract.safeId();
-        return Number(id) + 1;
+        return Number(id);
       }
 
       getSafeId().then((safeId) => {
