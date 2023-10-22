@@ -45,7 +45,7 @@ const CreateSafe = () => {
       );
       console.log(res);
       formik.resetForm();
-      alert(`Your safe id is: ${(await goerliContract.safeId()) + 1}.`);
+      alert(`Your safe id is: ${await goerliContract.safeId()}.`);
     },
   });
 
@@ -53,7 +53,6 @@ const CreateSafe = () => {
     // Update the addressField value in the form
     formik.setFieldValue("owner1", address);
   }, [address, formik.setFieldValue]);
-  console.log(formik);
   return (
     <div className="h-screen py-28 bg-[#1E1e1e] bg-[url('/bg2.png')] bg-center">
       <div className="w-[80%] rounded-xl mx-auto bg-[#000]/30 backdrop-blur-md p-5 border border-gray-600">

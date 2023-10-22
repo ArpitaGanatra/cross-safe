@@ -5,9 +5,17 @@ import { Select } from "@chakra-ui/react";
 import clsx from "clsx";
 import { ethers } from "ethers";
 import { usdcABI } from "@/abi/usdcABI";
-import { goerliContractAddress, usdcContractAddress } from "@/libs/constants";
+import {
+  avaxContractAddress,
+  goerliContractAddress,
+  hyperlaneContractAddress,
+  usdcContractAddress,
+} from "@/libs/constants";
 import { useAccount } from "wagmi";
 import { goerliABI } from "@/abi/goerliABI";
+import { hyperlaneABI } from "@/abi/hyperlaneABI";
+import { avaxABI } from "@/abi/avaxABI";
+import { optimizedAppearDataAttribute } from "framer-motion";
 
 const index = () => {
   const { address } = useAccount();
@@ -16,7 +24,7 @@ const index = () => {
   const formik = useFormik({
     initialValues: {
       txnType: "",
-      safeId: "",
+      safeId: 0,
       amount: 0,
       address: "",
       chainId: "",
@@ -35,6 +43,11 @@ const index = () => {
       await provider.send("eth_requestAccounts", [0]);
       let signer = provider.getSigner();
       let approveResponse;
+      const goerliContract = new ethers.Contract(
+        goerliContractAddress,
+        goerliABI,
+        signer
+      );
       if (values.txnType === "add") {
         const usdcContract = new ethers.Contract(
           usdcContractAddress,
@@ -69,11 +82,6 @@ const index = () => {
           );
           setLoadingTxn(false);
         } else {
-          const goerliContract = new ethers.Contract(
-            goerliContractAddress,
-            goerliABI,
-            signer
-          );
           const storeResponse = await goerliContract.storeFunds(
             values.safeId,
             values.amount
@@ -81,6 +89,60 @@ const index = () => {
           formik.resetForm();
           setLoadingTxn(false);
         }
+      } else if (values.txnType === "withdraw") {
+      } else if (values.txnType === "signSts1") {
+        setLoadingTxn(true);
+
+        const signRes = await goerliContract.SetApproval(values.safeId);
+        console.log(signRes);
+        setLoadingTxn(false);
+      } else if (values.txnType === "signSts2") {
+        setLoadingTxn(true);
+
+        const hyperlaneContract = new ethers.Contract(
+          hyperlaneContractAddress,
+          hyperlaneABI,
+          signer
+        );
+
+        hyperlaneContract
+          .quoteGasPayment(5, 180000)
+          .then(async (gasEstimationRes) => {
+            console.log("gasEstimationRes", parseInt(gasEstimationRes));
+            debugger;
+            const avaxContract = new ethers.Contract(
+              avaxContractAddress,
+              avaxABI,
+              signer
+            );
+            const _safeId = values.safeId;
+            await avaxContract.queryOwner(
+              Number(_safeId),
+              goerliContractAddress,
+
+              { value: gasEstimationRes }
+            );
+
+            const signRes = await avaxContract.setStatus(values.safeId);
+
+            const goerliGasEstimation = hyperlaneContract.quoteGasPayment(
+              43113,
+              180000
+            );
+            if (goerliGasEstimation) {
+              const statusChangeRes = await goerliContract(
+                values.safeId,
+                avaxContractAddress,
+                { value: goerliGasEstimation }
+              );
+              console.log(statusChangeRes);
+              setLoadingTxn(false);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            setLoadingTxn(false);
+          });
       }
     },
   });
@@ -120,7 +182,15 @@ const index = () => {
                     }}
                   >
                     <option value="add">Add</option>
-                    <option value="withdraw">Withdraw</option>
+                    <option value="withdraw">
+                      Withdraw (when both owners approved)
+                    </option>
+                    <option value="signSts1">
+                      Create & sign withdraw txn (owner 1)
+                    </option>
+                    <option value="signSts2">
+                      sign withdraw txn (owner 2)
+                    </option>
                   </Select>
                 </div>
                 <div className="flex flex-col space-y-2 text-white">
