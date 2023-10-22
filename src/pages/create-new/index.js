@@ -37,7 +37,7 @@ const CreateSafe = () => {
         values.owner2
       );
       formik.resetForm();
-      alert(`Your safe id is: ${(await goerliContract.safeId()) + 1}.`);
+      alert(`Your safe id is: ${Number(await goerliContract.safeId()) + 1}.`);
     },
   });
 
