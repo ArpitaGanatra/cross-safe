@@ -4,8 +4,15 @@ import React, { useState } from "react";
 import { Select } from "@chakra-ui/react";
 import clsx from "clsx";
 import { ethers } from "ethers";
+import { usdcABI } from "@/abi/usdcABI";
+import { goerliContractAddress, usdcContractAddress } from "@/libs/constants";
+import { useAccount } from "wagmi";
+import { goerliABI } from "@/abi/goerliABI";
 
 const index = () => {
+  const { address } = useAccount();
+
+  const [loadingTxn, setLoadingTxn] = useState(false);
   const formik = useFormik({
     initialValues: {
       txnType: "",
@@ -23,28 +30,62 @@ const index = () => {
           ethers.utils.parseUnits(values.amount.toString(), 6)
         ).toString()
       );
+      setLoadingTxn(true);
+      let provider = new ethers.providers.Web3Provider(window.ethereum);
+      await provider.send("eth_requestAccounts", [0]);
+      let signer = provider.getSigner();
+      let approveResponse;
       if (values.txnType === "add") {
+        const usdcContract = new ethers.Contract(
+          usdcContractAddress,
+          usdcABI,
+          signer
+        );
+        const allowanceResponse = await usdcContract.allowance(
+          address,
+          goerliContractAddress
+        );
+        if (
+          allowanceResponse <
+          parseInt(
+            ethers.utils.parseUnits(values.amount.toString(), 6)
+          ).toString()
+        ) {
+          debugger;
+          approveResponse = await usdcContract.approve(
+            goerliContractAddress,
+            parseInt(
+              ethers.utils.parseUnits(values.amount.toString(), 6)
+            ).toString()
+          );
+          const goerliContract = new ethers.Contract(
+            goerliContractAddress,
+            goerliABI,
+            signer
+          );
+          const storeResponse = await goerliContract.storeFunds(
+            values.safeId,
+            values.amount
+          );
+          setLoadingTxn(false);
+        } else {
+          const goerliContract = new ethers.Contract(
+            goerliContractAddress,
+            goerliABI,
+            signer
+          );
+          const storeResponse = await goerliContract.storeFunds(
+            values.safeId,
+            values.amount
+          );
+          formik.resetForm();
+          setLoadingTxn(false);
+        }
       }
     },
   });
 
   return (
-    // <div className="min-h-screen flex items-center justify-center">
-    //   {/* safe id, value in usdc */}
-    //   <input
-    //     type="text"
-    //     value={safeId}
-    //     onChange={(e) => setSafeId(e.target.value)}
-    //     className="input_box"
-    //   />
-    //   <input
-    //     type="text"
-    //     value={valueInUSDC}
-    //     onChange={(e) => setvalueInUSDC(e.target.value)}
-    //     className="input_box"
-    //   />
-    //   <button>submit</button>
-    // </div>
     <div className="h-screen py-28 bg-[#1E1e1e] bg-[url('/bg2.png')] bg-center">
       <div className="w-[80%] rounded-xl mx-auto bg-[#000]/30 backdrop-blur-md p-5 border border-gray-600">
         <div className="mx-auto flex gap-14 px-3 py-5">
@@ -167,8 +208,16 @@ const index = () => {
                 )}
 
                 <Box as="span" display="inline-block">
-                  <Button w="auto" type="submit">
-                    show
+                  <Button
+                    w="auto"
+                    type="submit"
+                    isLoading={loadingTxn}
+                    loadingText="submitting"
+                    colorScheme="teal"
+                    variant="outline"
+                    spinnerPlacement="end"
+                  >
+                    submit txn
                   </Button>
                 </Box>
               </VStack>

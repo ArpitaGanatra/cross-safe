@@ -38,7 +38,7 @@ const index = () => {
                 </div>
                 <div>
                   <p className="text-gray-300 text-base">Safe Balance:</p>
-                  <p>{parseInt(safeInfo.balance)}</p>
+                  <p>{`${parseInt(safeInfo.balance)} USDC`}</p>
                 </div>
                 <p className="text-gray-300 text-base">Owner1:</p>
                 <p>{safeInfo.a1}</p>
