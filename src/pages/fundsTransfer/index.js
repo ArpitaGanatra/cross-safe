@@ -48,6 +48,13 @@ const index = () => {
         goerliABI,
         signer
       );
+
+      const hyperlaneContract = new ethers.Contract(
+        hyperlaneContractAddress,
+        hyperlaneABI,
+        signer
+      );
+
       if (values.txnType === "add") {
         const usdcContract = new ethers.Contract(
           usdcContractAddress,
@@ -64,7 +71,6 @@ const index = () => {
             ethers.utils.parseUnits(values.amount.toString(), 6)
           ).toString()
         ) {
-          debugger;
           approveResponse = await usdcContract.approve(
             goerliContractAddress,
             parseInt(
@@ -90,6 +96,29 @@ const index = () => {
           setLoadingTxn(false);
         }
       } else if (values.txnType === "withdraw") {
+        setLoadingTxn(true);
+        const goerliGasEstimation = hyperlaneContract.quoteGasPayment(
+          43113,
+          180000
+        );
+        if (goerliGasEstimation) {
+          const statusChangeRes = await goerliContract.queryOwner(
+            values.safeId,
+            avaxContractAddress,
+            { value: goerliGasEstimation }
+          );
+          console.log(statusChangeRes);
+          setLoadingTxn(false);
+        }
+
+        const signRes = await goerliContract.withdraw(
+          values.safeId,
+          values.amount,
+          values.address,
+          values.chainId
+        );
+        console.log(signRes);
+        setLoadingTxn(false);
       } else if (values.txnType === "signSts1") {
         setLoadingTxn(true);
 
@@ -98,12 +127,6 @@ const index = () => {
         setLoadingTxn(false);
       } else if (values.txnType === "signSts2") {
         setLoadingTxn(true);
-
-        const hyperlaneContract = new ethers.Contract(
-          hyperlaneContractAddress,
-          hyperlaneABI,
-          signer
-        );
 
         hyperlaneContract
           .quoteGasPayment(5, 180000)
@@ -124,20 +147,6 @@ const index = () => {
             );
 
             const signRes = await avaxContract.setStatus(values.safeId);
-
-            const goerliGasEstimation = hyperlaneContract.quoteGasPayment(
-              43113,
-              180000
-            );
-            if (goerliGasEstimation) {
-              const statusChangeRes = await goerliContract(
-                values.safeId,
-                avaxContractAddress,
-                { value: goerliGasEstimation }
-              );
-              console.log(statusChangeRes);
-              setLoadingTxn(false);
-            }
           })
           .catch((error) => {
             console.log(error);
