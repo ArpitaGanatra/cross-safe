@@ -41,12 +41,6 @@ const index = () => {
         signer
       );
 
-      const hyperlaneContract = new ethers.Contract(
-        hyperlaneContractAddress,
-        hyperlaneABI,
-        signer
-      );
-
       if (values.txnType === "add") {
         const usdcContract = new ethers.Contract(
           usdcContractAddress,
