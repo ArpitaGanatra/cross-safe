@@ -109,31 +109,35 @@ const index = () => {
         setLoadingTxn(false);
       } else if (values.txnType === "signSts2") {
         setLoadingTxn(true);
+        debugger;
 
-        hyperlaneContract
-          .quoteGasPayment(5, 180000)
-          .then(async (gasEstimationRes) => {
-            const avaxContract = new ethers.Contract(
-              avaxContractAddress,
-              avaxABI,
-              signer
-            );
-            const _safeId = values.safeId;
-            await avaxContract.queryOwner(
-              Number(_safeId),
-              goerliContractAddress,
+        const avaxContract = new ethers.Contract(
+          avaxContractAddress,
+          avaxABI,
+          signer
+        );
+        const _safeId = values.safeId;
+        // await avaxContract.queryOwner(
+        //   Number(_safeId),
+        //   goerliContractAddress,
 
-              { value: gasEstimationRes }
-            );
-
-            const signRes = await avaxContract.setStatus(values.safeId, {
+        //   { value: "45000000000000000" }
+        // );
+        try {
+          const signRes = await avaxContract.setStatus(
+            values.safeId,
+            "ethereum-sepolia",
+            "0xe10816b1844315479F6d5307D19D8f769e67daF2",
+            {
               value: "150000000000000000",
-            });
-          })
-          .catch((error) => {
-            console.log(error);
-            setLoadingTxn(false);
-          });
+              gasLimit: "3000000",
+            }
+          );
+          console.log(signRes);
+          setLoadingTxn(false);
+        } catch (error) {
+          console.log(error);
+        }
       }
     },
   });
