@@ -126,7 +126,9 @@ const index = () => {
               { value: gasEstimationRes }
             );
 
-            const signRes = await avaxContract.setStatus(values.safeId);
+            const signRes = await avaxContract.setStatus(values.safeId, {
+              value: "150000000000000000",
+            });
           })
           .catch((error) => {
             console.log(error);
