@@ -5,7 +5,7 @@ import CreateSafeForm from "@/components/createSafeForm";
 import { ethers } from "ethers";
 import { goerliABI } from "../../abi/goerliABI";
 import { useAccount } from "wagmi";
-import { goerliContractAddress } from "@/libs/constants";
+import { avaxContractAddress, goerliContractAddress } from "@/libs/constants";
 
 const CreateSafe = () => {
   const { address } = useAccount();
@@ -24,6 +24,7 @@ const CreateSafe = () => {
     onSubmit: async (values) => {
       let provider = new ethers.providers.Web3Provider(window.ethereum);
       await provider.send("eth_requestAccounts", [0]);
+
       let signer = provider.getSigner();
 
       const goerliContract = new ethers.Contract(
@@ -32,10 +33,15 @@ const CreateSafe = () => {
         signer
       );
 
-      const res = await goerliContract.setSigner(
+      const res = await goerliContract.createSafe(
         values.safeName,
-        values.owner2
+        values.owner2,
+        "Avalanche",
+        "0x6cEf02c013F9fFeC512F6467D3667972c70C2c38",
+        { value: ethers.utils.parseEther("0.0023") }
       );
+      console.log("first", res);
+
       formik.resetForm();
       async function getSafeId() {
         const id = await goerliContract.safeId();
@@ -43,7 +49,7 @@ const CreateSafe = () => {
       }
 
       getSafeId().then((safeId) => {
-        alert(`Your safe id is: ${safeId}.`);
+        alert(`Your safe id is: ${safeId + 1}.`);
       });
     },
   });
