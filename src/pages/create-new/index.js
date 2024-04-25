@@ -27,20 +27,23 @@ const CreateSafe = () => {
 
       let signer = provider.getSigner();
 
-      const goerliContract = new ethers.Contract(
-        goerliContractAddress,
-        goerliABI,
-        signer
-      );
-
-      const res = await goerliContract.createSafe(
-        values.safeName,
-        values.owner2,
-        "binance",
-        "0x4806c0858dfCAf2B58d10889bC6e40B0e12fb9fC",
-        { value: ethers.utils.parseEther("0.13") }
-      );
-      console.log("first", res);
+      try {
+        const goerliContract = new ethers.Contract(
+          "0x9A91cB0Fc64704fA4D18131F3B9f2C0210d5ec27",
+          goerliABI,
+          signer
+        );
+        const res = await goerliContract.createSafe(
+          values.safeName,
+          values.owner2,
+          "binance",
+          "0x4806c0858dfCAf2B58d10889bC6e40B0e12fb9fC",
+          { value: ethers.utils.parseEther("0.13") }
+        );
+        console.log("first", res);
+      } catch (error) {
+        console.log("error", error);
+      }
 
       formik.resetForm();
       async function getSafeId() {
