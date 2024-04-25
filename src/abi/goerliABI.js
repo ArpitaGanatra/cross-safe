@@ -1,4 +1,4 @@
-export const goerliABI = [
+[
 	{
 		"inputs": [
 			{
@@ -42,6 +42,31 @@ export const goerliABI = [
 			}
 		],
 		"name": "Executed",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "a1",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "_safeId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "_funds",
+				"type": "uint256"
+			}
+		],
+		"name": "addFundsEvent",
 		"type": "event"
 	},
 	{
@@ -489,4 +514,4 @@ export const goerliABI = [
 		"stateMutability": "nonpayable",
 		"type": "function"
 	}
-];
+]

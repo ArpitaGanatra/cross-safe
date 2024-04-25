@@ -36,9 +36,9 @@ const CreateSafe = () => {
       const res = await goerliContract.createSafe(
         values.safeName,
         values.owner2,
-        "Avalanche",
-        "0x6cEf02c013F9fFeC512F6467D3667972c70C2c38",
-        { value: ethers.utils.parseEther("0.0023") }
+        "binance",
+        "0x4806c0858dfCAf2B58d10889bC6e40B0e12fb9fC",
+        { value: ethers.utils.parseEther("0.13") }
       );
       console.log("first", res);
 

@@ -42,67 +42,26 @@ const index = () => {
       );
 
       if (values.txnType === "add") {
-        const usdcContract = new ethers.Contract(
-          usdcContractAddress,
-          usdcABI,
-          signer
-        );
-        const allowanceResponse = await usdcContract.allowance(
-          address,
-          goerliContractAddress
-        );
-        if (
-          allowanceResponse <
-          parseInt(
-            ethers.utils.parseUnits(values.amount.toString(), 6)
-          ).toString()
-        ) {
-          approveResponse = await usdcContract.approve(
-            goerliContractAddress,
-            parseInt(
-              ethers.utils.parseUnits(values.amount.toString(), 6)
-            ).toString()
-          );
-          const goerliContract = new ethers.Contract(
-            goerliContractAddress,
-            goerliABI,
-            signer
-          );
+
           const storeResponse = await goerliContract.storeFunds(
             values.safeId,
-            values.amount
-          );
-          setLoadingTxn(false);
-        } else {
-          const storeResponse = await goerliContract.storeFunds(
-            values.safeId,
-            values.amount
+            values.amount,
+            {value:values.amount}
           );
           formik.resetForm();
           setLoadingTxn(false);
-        }
       } else if (values.txnType === "withdraw") {
         setLoadingTxn(true);
-        const goerliGasEstimation = hyperlaneContract.quoteGasPayment(
-          43113,
-          180000
-        );
-        if (goerliGasEstimation) {
-          await goerliContract
-            .queryOwner(values.safeId, avaxContractAddress, {
-              value: goerliGasEstimation,
-            })
-            .then(async (value) => {
+
               const signRes = await goerliContract.withdraw(
                 values.safeId,
                 values.amount,
-                values.address,
-                values.chainId
+                values.address
               );
               setLoadingTxn(false);
-            });
+          
         }
-      } else if (values.txnType === "signSts1") {
+       else if (values.txnType === "signSts1") {
         setLoadingTxn(true);
 
         const signRes = await goerliContract.SetApproval(values.safeId);
@@ -117,19 +76,13 @@ const index = () => {
           signer
         );
         const _safeId = values.safeId;
-        // await avaxContract.queryOwner(
-        //   Number(_safeId),
-        //   goerliContractAddress,
-
-        //   { value: "45000000000000000" }
-        // );
         try {
           const signRes = await avaxContract.setStatus(
             values.safeId,
-            "ethereum-sepolia",
-            "0xe10816b1844315479F6d5307D19D8f769e67daF2",
+            "Avalanche",
+            "0x9A91cB0Fc64704fA4D18131F3B9f2C0210d5ec27",
             {
-              value: "150000000000000000",
+              value: "1000000000000000",
               gasLimit: "3000000",
             }
           );

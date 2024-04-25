@@ -1,4 +1,4 @@
-export const avaxABI = [
+[
 	{
 		"inputs": [
 			{
@@ -215,4 +215,4 @@ export const avaxABI = [
 		"stateMutability": "payable",
 		"type": "function"
 	}
-];
+]

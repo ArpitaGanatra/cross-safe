@@ -15,7 +15,7 @@ const data = [
     img: "/buying.png",
     title: "Add/ withdraw funds",
     subtitle: "Any signer can add/withdraw crypto.",
-    text: "Add funds to the chain safe is deployed. Or add USDC to withdraw it from any desired chain the safe is deployed to.",
+    text: "Add funds to the chain safe is deployed. Or add ETH to withdraw it from any desired chain the safe is deployed to.",
   },
   {
     id: 3,
