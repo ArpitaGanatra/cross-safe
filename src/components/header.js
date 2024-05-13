@@ -18,10 +18,10 @@ const Header = () => {
               <Link href="/create-new">Create Safe</Link>
             </li>
             <li className="hover:scale-105 hover:font-semibold cursor-pointer transition-all 0.1s ease-in-out">
-              <Link href="/fundsTransfer">Funds Transfer</Link>
+              <Link href="/fundsTransfer">Manage Safe</Link>
             </li>
             <li className="hover:scale-105 hover:font-semibold cursor-pointer transition-all 0.1s ease-in-out">
-              <Link href="/existingInfo">Existing safe info</Link>
+              <Link href="/existingInfo">Get Safe Info</Link>
             </li>
           </ul>
         </div>

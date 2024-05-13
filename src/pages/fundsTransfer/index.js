@@ -2,6 +2,8 @@ import { Box, Button, VStack } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import { Select } from "@chakra-ui/react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import clsx from "clsx";
 import { ethers } from "ethers";
 import { usdcABI } from "@/abi/usdcABI";
@@ -40,28 +42,57 @@ const index = () => {
 
       if (values.txnType === "add") {
         let val = await ethers.utils.parseEther(values.amount);
-          const storeResponse = await avaxContract.addFunds(
-            values.safeId,
-            val
-          );
-          formik.resetForm();
-          setLoadingTxn(false);
-      } else if (values.txnType === "withdraw") {
-        setLoadingTxn(true);
-
-              const signRes = await avaxContract.withdraw(
-                values.safeId,
-                values.amount,
-                values.address
-              );
-              setLoadingTxn(false);
-          
-        }
-       else if (values.txnType === "signSts1") {
-        setLoadingTxn(true);
-
-        const signRes = await avaxContract.SetApproval(values.safeId);
+        try{
+        const storeResponse = await avaxContract.addFunds(
+          values.safeId,
+          val
+        );
+        let tx = `https://testnet.snowtrace.io/tx/${storeResponse.hash}`
+        toast.success(<a href={tx} target="_blank">Transaction successful</a>,{
+          autoClose: 6000,
+          pauseOnHover: true,
+          theme: "dark",
+          });
         setLoadingTxn(false);
+      } catch (e) {
+        toast.error("Transaction Failed. Please try again!");
+      }
+      } else if (values.txnType === "withdraw") {
+        let value = parseInt(ethers.utils.parseUnits((`${values.amount}`), "ether"));
+        console.log("Value", value);
+        setLoadingTxn(true);
+    try{
+        const signRes = await avaxContract.withdraw(
+          values.safeId,
+          value.toString(),
+          values.address
+        );
+        let tx = `https://testnet.snowtrace.io/tx/${signRes.hash}`
+        toast.success(<a href={tx} target="_blank">Transaction successful</a>,{
+          autoClose: 6000,
+          pauseOnHover: true,
+          theme: "dark",
+          });
+        setLoadingTxn(false);
+      } catch (e) {
+        toast.error("Transaction Failed. Please try again!");
+      }
+      }
+      else if (values.txnType === "signSts1") {
+        setLoadingTxn(true);
+        try {
+          const signRes = await avaxContract.SetApproval(values.safeId);
+          console.log("Data",signRes.hash);
+          let tx = `https://testnet.snowtrace.io/tx/${signRes.hash}`
+          toast.success(<a href={tx} target="_blank">Transaction successful</a>,{
+            autoClose: 6000,
+            pauseOnHover: true,
+            theme: "dark",
+            });
+          setLoadingTxn(false);
+        } catch (e) {
+          toast.error("Transaction Failed. Please try again!");
+        }
       } else if (values.txnType === "signSts2") {
         setLoadingTxn(true);
         debugger;
@@ -82,34 +113,33 @@ const index = () => {
               gasLimit: "3000000",
             }
           );
-          console.log(signRes);
+          let tx = `https://testnet.bscscan.com/tx/${signRes.hash}`
+          toast.success(<a href={tx} target="_blank">Transaction successful</a>,{
+            autoClose: 6000,
+            pauseOnHover: true,
+            theme: "dark",
+            });
           setLoadingTxn(false);
-        } catch (error) {
-          console.log(error);
+        } catch (e) {
+          toast.error("Transaction Failed. Please try again!");
         }
       }
     },
   });
 
   return (
+
     <div className="h-screen py-28 bg-[#1E1e1e] bg-[url('/bg2.png')] bg-center">
+      <ToastContainer />
       <div className="w-[80%] rounded-xl mx-auto bg-[#000]/30 backdrop-blur-md p-5 border border-gray-600">
         <div className="mx-auto flex gap-14 px-3 py-5">
           <div className="flex-[0.33] bg-gradient-to-b from-[#3f013e] via-[#823782] to-[#3600b5]  rounded-xl px-9 py-6 flex flex-col justify-between">
             <div>
-              <h2 className="text-white text-3xl font-semibold mb-4">
-                Add funds to your safe.
-              </h2>
-              <br />
-              <h2 className="text-white text-3xl font-semibold mb-4">
-                OR
-              </h2>{" "}
-              <br />
             </div>
           </div>
           <div className="flex-[0.67]  pr-10 py-4">
             <h2 className="text-3xl bg-gradient-to-r text-transparent bg-clip-text from-[#FD42FB] via-[#CD9ECD] to-[#753FF3]  font-semibold mb-6">
-              Add/ Withdraw
+              Safe Actions
             </h2>
             <form onSubmit={formik.handleSubmit}>
               <VStack spacing={4} align="flex-start">
@@ -121,7 +151,7 @@ const index = () => {
                       formik.setFieldValue("txnType", e.target.value);
                     }}
                   >
-                    <option value="add">Add</option>
+                    <option value="add">Add Funds</option>
                     <option value="withdraw">
                       Withdraw (when both owners approved)
                     </option>
@@ -142,10 +172,9 @@ const index = () => {
                     onChange={formik.handleChange}
                     value={formik.values.safeId}
                     className={clsx(
-                      `input_box ${
-                        formik.errors.safeId && formik.touched.safeId
-                          ? "border border-red-500"
-                          : "border border-[#334155]"
+                      `input_box ${formik.errors.safeId && formik.touched.safeId
+                        ? "border border-red-500"
+                        : "border border-[#334155]"
                       }`
                     )}
                   />
@@ -164,10 +193,9 @@ const index = () => {
                     onChange={formik.handleChange}
                     value={formik.values.amount}
                     className={clsx(
-                      `input_box ${
-                        formik.errors.amount && formik.touched.amount
-                          ? "border border-red-500"
-                          : "border border-[#334155]"
+                      `input_box ${formik.errors.amount && formik.touched.amount
+                        ? "border border-red-500"
+                        : "border border-[#334155]"
                       }`
                     )}
                   />
@@ -189,10 +217,9 @@ const index = () => {
                         onChange={formik.handleChange}
                         value={formik.values.address}
                         className={clsx(
-                          `input_box ${
-                            formik.errors.address && formik.touched.address
-                              ? "border border-red-500"
-                              : "border border-[#334155]"
+                          `input_box ${formik.errors.address && formik.touched.address
+                            ? "border border-red-500"
+                            : "border border-[#334155]"
                           }`
                         )}
                       />
@@ -206,10 +233,9 @@ const index = () => {
                         onChange={formik.handleChange}
                         value={formik.values.chainId}
                         className={clsx(
-                          `input_box ${
-                            formik.errors.chainId && formik.touched.chainId
-                              ? "border border-red-500"
-                              : "border border-[#334155]"
+                          `input_box ${formik.errors.chainId && formik.touched.chainId
+                            ? "border border-red-500"
+                            : "border border-[#334155]"
                           }`
                         )}
                       />

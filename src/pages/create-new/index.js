@@ -32,6 +32,7 @@ const CreateSafe = () => {
         avaxABI,
         signer
       );
+      try{
       const res = await avaxContract.createSafe(
         values.safeName,
         values.owner2,
@@ -39,7 +40,16 @@ const CreateSafe = () => {
         "0x2c6A3899ad8E6f438dca705644f0fA937Ff7c0Ad",
         { value:"30000000000000000" }
       );
-      console.log("first", res);
+      let tx = `https://testnet.snowtrace.io/tx/${res.hash}`
+      toast.success(<a href={tx} target="_blank">Transaction successful</a>,{
+        autoClose: 6000,
+        pauseOnHover: true,
+        theme: "dark",
+        });
+      setLoadingTxn(false);
+    } catch (e) {
+      toast.error("Transaction Failed. Please try again!");
+    }
 
       formik.resetForm();
       async function getSafeId() {
