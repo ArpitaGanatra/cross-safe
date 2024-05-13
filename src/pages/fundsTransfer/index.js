@@ -7,14 +7,11 @@ import { ethers } from "ethers";
 import { usdcABI } from "@/abi/usdcABI";
 import {
   avaxContractAddress,
-  goerliContractAddress,
-  hyperlaneContractAddress,
-  usdcContractAddress,
+  bnbContractAddress
 } from "@/libs/constants";
 import { useAccount } from "wagmi";
-import { goerliABI } from "@/abi/goerliABI";
-import { hyperlaneABI } from "@/abi/hyperlaneABI";
 import { avaxABI } from "@/abi/avaxABI";
+import { bnbAbi } from "@/abi/bnbABI";
 
 const index = () => {
   const { address } = useAccount();
@@ -35,25 +32,24 @@ const index = () => {
       await provider.send("eth_requestAccounts", [0]);
       let signer = provider.getSigner();
       let approveResponse;
-      const goerliContract = new ethers.Contract(
-        goerliContractAddress,
-        goerliABI,
+      const avaxContract = new ethers.Contract(
+        avaxContractAddress,
+        avaxABI,
         signer
       );
 
       if (values.txnType === "add") {
-
-          const storeResponse = await goerliContract.storeFunds(
+        let val = await ethers.utils.parseEther(values.amount);
+          const storeResponse = await avaxContract.addFunds(
             values.safeId,
-            values.amount,
-            {value:values.amount}
+            val
           );
           formik.resetForm();
           setLoadingTxn(false);
       } else if (values.txnType === "withdraw") {
         setLoadingTxn(true);
 
-              const signRes = await goerliContract.withdraw(
+              const signRes = await avaxContract.withdraw(
                 values.safeId,
                 values.amount,
                 values.address
@@ -64,23 +60,23 @@ const index = () => {
        else if (values.txnType === "signSts1") {
         setLoadingTxn(true);
 
-        const signRes = await goerliContract.SetApproval(values.safeId);
+        const signRes = await avaxContract.SetApproval(values.safeId);
         setLoadingTxn(false);
       } else if (values.txnType === "signSts2") {
         setLoadingTxn(true);
         debugger;
 
-        const avaxContract = new ethers.Contract(
-          avaxContractAddress,
-          avaxABI,
+        const bnbContract = new ethers.Contract(
+          bnbContractAddress,
+          bnbAbi,
           signer
         );
         const _safeId = values.safeId;
         try {
-          const signRes = await avaxContract.setStatus(
+          const signRes = await bnbContract.setStatus(
             values.safeId,
             "Avalanche",
-            "0x9A91cB0Fc64704fA4D18131F3B9f2C0210d5ec27",
+            "0xbB9B08486B59b04DbbA3a1F6432A368801269bcf",
             {
               value: "1000000000000000",
               gasLimit: "3000000",
@@ -109,10 +105,6 @@ const index = () => {
                 OR
               </h2>{" "}
               <br />
-              <h2 className="text-white text-3xl font-semibold mb-4">
-                Withdraw funds on any chain. (We use 'avalanche fuji for this
-                example')
-              </h2>
             </div>
           </div>
           <div className="flex-[0.67]  pr-10 py-4">

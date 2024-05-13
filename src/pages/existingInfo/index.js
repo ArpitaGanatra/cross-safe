@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { goerliABI } from "../../abi/goerliABI";
+import { avaxABI } from "../../abi/avaxABI";
 import { ethers } from "ethers";
 import { Box, Button } from "@chakra-ui/react";
-import { goerliContractAddress } from "@/libs/constants";
-
+import { avaxContractAddress } from "@/libs/constants";
 const index = () => {
   const [safeId, setSafeId] = useState("");
   const [safeInfo, setSafeInfo] = useState("");
@@ -11,13 +10,13 @@ const index = () => {
   const showSafeInfo = async () => {
     let provider = new ethers.providers.Web3Provider(window.ethereum);
 
-    const goerliContract = new ethers.Contract(
-      goerliContractAddress,
-      goerliABI,
+    const avaxContract = new ethers.Contract(
+      avaxContractAddress,
+      avaxABI,
       provider
     );
 
-    const res = await goerliContract.safeOwner(safeId);
+    const res = await avaxContract.safeOwner(safeId);
     setSafeInfo(res);
   };
   return (
@@ -36,7 +35,8 @@ const index = () => {
                 </div>
                 <div>
                   <p className="text-gray-300 text-base">Safe Balance:</p>
-                  <p>{`${parseInt(safeInfo.balance)} USDC`}</p>
+                  <p>{
+                  `${ethers.utils.formatEther(BigInt(JSON.stringify(safeInfo.balance == undefined?0:parseInt(safeInfo?.balance))))} USDC`}</p>
                 </div>
                 <p className="text-gray-300 text-base">Owner1:</p>
                 <p>{safeInfo.a1}</p>
@@ -49,13 +49,13 @@ const index = () => {
                 <p className="text-gray-300 text-base">
                   Signing status for Owner1:
                 </p>
-                <p>{String(safeInfo.sts1)}</p>
+                <p>{String(safeInfo.sts1 == undefined?false:safeInfo.sts1)}</p>
               </div>
               <div>
                 <p className="text-gray-300 text-base">
                   Signing status for Owner2:
                 </p>
-                <p>{String(safeInfo.sts2)}</p>
+                <p>{String(safeInfo.sts2 == undefined?false:safeInfo.sts2)}</p>
               </div>
             </div>
           </div>

@@ -1,3 +1,2 @@
-export const goerliContractAddress =
-  "0x8e5365A92D0b8681474db176fE863a4b9B0248B0"; //Sepolia Source
-export const avaxContractAddress = "0xb985a8f4f98575268E68E2706F35A416e7A01881";
+export const avaxContractAddress ="0xbB9B08486B59b04DbbA3a1F6432A368801269bcf"; //Sepolia Source
+export const bnbContractAddress = "0x2c6A3899ad8E6f438dca705644f0fA937Ff7c0Ad";

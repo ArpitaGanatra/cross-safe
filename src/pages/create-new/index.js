@@ -3,7 +3,7 @@ import { Formik, FieldArray, Field, Form, useFormik } from "formik";
 import * as yup from "yup";
 import CreateSafeForm from "@/components/createSafeForm";
 import { ethers } from "ethers";
-import { goerliABI } from "../../abi/goerliABI";
+import { avaxABI } from "../../abi/avaxABI";
 import { useAccount } from "wagmi";
 import { avaxContractAddress, goerliContractAddress } from "@/libs/constants";
 
@@ -27,23 +27,23 @@ const CreateSafe = () => {
 
       let signer = provider.getSigner();
 
-      const goerliContract = new ethers.Contract(
-        "0x8e5365A92D0b8681474db176fE863a4b9B0248B0",
-        goerliABI,
+      const avaxContract = new ethers.Contract(
+        "0xbB9B08486B59b04DbbA3a1F6432A368801269bcf",
+        avaxABI,
         signer
       );
-      const res = await goerliContract.createSafe(
+      const res = await avaxContract.createSafe(
         values.safeName,
         values.owner2,
         "binance",
-        "0xb985a8f4f98575268E68E2706F35A416e7A01881",
-        { value: ethers.utils.parseEther("0.13") }
+        "0x2c6A3899ad8E6f438dca705644f0fA937Ff7c0Ad",
+        { value:"30000000000000000" }
       );
       console.log("first", res);
 
       formik.resetForm();
       async function getSafeId() {
-        const id = await goerliContract.safeId();
+        const id = await avaxContract.safeId();
         return Number(id);
       }
 

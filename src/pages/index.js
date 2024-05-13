@@ -20,7 +20,7 @@ export default function Home() {
 
           <p className="text-gray-400 w-[60%] mx-auto font-Grotesk">
             Deploy, transact and sign your safe to any chain. <br />
-            (Currently, we only have 2 chains due to time constraints)
+            (Currently we support Avalanche and Binance Smart Chain)
           </p>
           <Link href={"/about"}>
             <button className="py-3 px-8 mt-8 border font-Grotesk font-semibold border-gray-200 rounded-full bg-gradient-to-r text-transparent bg-clip-text from-[#FD42FB] via-[#CD9ECD] to-[#753FF3] hover:scale-105 transition-all 0.1s ease-in-out ">

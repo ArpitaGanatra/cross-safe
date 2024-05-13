@@ -9,7 +9,7 @@ import {
 } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import {
-  sepolia,
+  bscTestnet,
   avalancheFuji,
 } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
@@ -18,7 +18,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 
 export default function App({ Component, pageProps }) {
   const { chains, publicClient } = configureChains(
-    [sepolia, avalancheFuji],
+    [bscTestnet, avalancheFuji],
     [
       alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID }),
       publicProvider(),
